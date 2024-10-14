@@ -1,0 +1,22 @@
+.jumbotron {
+    background-image: url('/static/images/jumbotron-bg.jpg');
+    background-size: cover;
+    color: white;
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-title {
+    font-weight: bold;
+}
+
+.card {
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}

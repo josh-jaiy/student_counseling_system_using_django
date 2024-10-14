@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- Intro Section -->
+    <div class="row">
+        <div class="col-12 text-center mb-4">
+            <h1 class="display-5">Available Counseling Materials</h1>
+            <p class="lead">Discover a variety of counseling resources designed to support your well-being and academic journey. From informative videos to helpful guides, explore the materials that can help you thrive in university.</p>
+            {% if user.is_authenticated %}
+            {% else %}
+                <p class="mt-4">Please <a href="{% url 'login' %}">login</a> or <a href="{% url 'register' %}">register</a> to access the materials.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if user.is_authenticated %}
+    <!-- Materials Section -->
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4">Available Materials</h2>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                {% for material in materials %}
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <!-- Material Display Logic -->
+                        {% if material.material_type == 'Video' and material.video_url %}
+                            <div class="ratio ratio-16x9">
+                                <iframe src="https://www.youtube.com/embed/{{ material.video_url|slice:'-11:' }}" 
+                                        title="{{ material.title }}" allowfullscreen>
+                                </iframe>
+                            </div>
+                        {% elif material.material_type == 'PDF' and material.file %}
+                            <img src="{% if material.image %}{{ material.image.url }}{% else %}{% static 'images/default-pdf-icon.png' %}{% endif %}" 
+                                 class="card-img-top" alt="{{ material.title }}">
+                        {% elif material.material_type == 'Text' %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ material.title }}</h5>
+                                <p class="card-text">{{ material.description|truncatewords:20 }}</p>
+                            </div>
+                        {% endif %}
+
+                        <!-- Card Body and Actions -->
+                        <div class="card-body">
+                            <h5 class="card-title">{{ material.title }}</h5>
+                            <p class="card-text">{{ material.description|truncatewords:20 }}</p>
+
+                            <!-- Category Badges -->
+                            <span class="badge bg-info text-dark">{{ material.material_type }}</span>
+                            {% if material.is_featured %}
+                            <span class="badge bg-warning text-dark">Featured</span>
+                            {% endif %}
+
+                            <!-- Buttons -->
+                            <div class="mt-3 d-flex justify-content-between">
+                                <a href="{% url 'download_material' material.id %}" class="btn btn-primary me-2">
+                                    <i class="fas fa-download"></i> Download
+                                </a>
+                                {% if material.file %}
+                                    <a href="{{ material.file.url }}" target="_blank" class="btn btn-secondary">
+                                        <i class="fas fa-file-alt"></i> Read Online
+                                    </a>
+                                {% else %}
+                                    <span class="text-muted">Not available for download</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

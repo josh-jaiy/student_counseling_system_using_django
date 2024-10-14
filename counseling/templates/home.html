@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+
+    <!-- Hero Section (Jumbotron) -->
+    <div class="jumbotron p-5 mb-4 bg-light rounded-3 text-center" style="background: linear-gradient(to right, rgba(0,123,255,0.7), rgba(255,255,255,0.7)), url('{% static 'images/counseling-bg.jpg' %}'); background-size: cover; background-position: center;">
+        <h1 class="display-4 text-white fw-bold">Welcome to student Counseling Unit</h1>
+        <p class="lead text-white">Counseling is an essential service that provides guidance and support to university students in navigating academic, emotional, and social challenges. It helps students develop coping strategies, improve their mental health, and achieve personal and academic success.</p>
+        <a class="btn btn-primary btn-lg" href="{% url 'materials' %}" role="button">Explore Materials</a>
+    </div>
+
+   </div>
+{% endblock %}
